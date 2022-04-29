@@ -1,0 +1,51 @@
+MATRIZ DE CASOS DE PRUEBA - ID CU01 - Tipo pedido,,,,,,,
+,,Elementros de Entrada,,,,,
+Id CP,Escenario,Checkbox,Nombre,Direccion,Telefono,Resultado esperado,Resultado Real
+CP1,-,Mostrador,Luis,Av. Cordoba 365,2646220733,Correcto,Correcto
+CP2,-,Mostrador,Lu!5,Av. Cordoba 365,2646126622,Correcto,Correcto
+CP3,-,Mostrador,Luis,Avenida 230,2646425634,Correcto,Correcto
+CP4,-,Mostrador,,Av. Cordoba 327,2646622092,Correcto,Correcto
+CP5,-,Mostrador,Luis,,264662872,Correcto,Correcto
+CP6,-,Mostrador,Luis,Av. Cordoba 2314,,Correcto,Correcto
+CP7,-,Mostrador,,,,Correcto,Correcto
+CP8,-,Mostrador,Luis,Av. Cordoba 111,holaquetal,*El telefono no puede tener letras,*El telefono no puede tener letras
+CP9,-,Mostrador,_$%$%6,%$&$%&??¡¡?,,*El nombre y la dirección deben contener al menos 4 letras,Correcto
+CP10,-,Mostrador,d,d,-,*El telefono no puede tener letras,Correcto
+CP11,-,Mostrador,d,d,--,*El telefono no puede tener letras,*El telefono no puede tener letras
+CP12,-,Mostrador,Martin,345345,+542645851566,Correcto,*El telefono no puede tener letras
+CP13,-,Mostrador,Martin,2rewrk4rw(,3'405934'0439,*El telefono no puede tener caracteres especiales,*El telefono no puede tener letras
+CP14,-,Mostrador,martinpelli@outlook.com,lmsfdfjlk243,,Correcto,Correcto
+CP15,-,Mostrador,🤝,Calle falsa 1234,99999999999999999999999999999999999999999999999999999999999999999,*El telefono no puede ser tan extenso,*El telefono no puede tener letras*El telefono no puede ser tan extenso
+CP16,-,Mostrador,45765,ñññññññññññññññññññññ,43,*El telefono es demasiado corto,Correcto
+CP17,-,-,dfllgdf,fkdjgdf,56464,*Elija un tipo de pedido,Boton de continuar bloqueado
+CP18,-,Delivery,Luis,Av. Cordoba 3255,2646622624,Correcto,Correcto
+CP19,-,Delivery,,Av Cordoba 3242,,Correcto,Correcto
+CP20,-,Delivery,Luis,,2345234123,Incorrecto direccion obligatoria,Correcto
+CP21,-,Delivery,Luis,Avenida 2354,2547237845,Incorrecto direccion invalida,Correcto
+CP22,-,Delivery,,Av5#n!d4 9o/rdo$a,,Incorrecton direccion invalida,Correcto
+CP23,-,Delivery,,,,Incorrecto direccion obligatoria,Correcto
+CP24,-,Delivery,Martin,345346,+542645851567,Correcto,*El telefono no puede tener letras
+CP25,-,Delivery,Martin,2rewrk4rw(,3'405934'0440,*El telefono no puede tener caracteres especiales,*El telefono no puede tener letras
+CP26,-,Delivery,martinpelli@outlook.com,lmsfdfjlk244,,Correcto,Correcto
+CP27,-,Delivery,🤝,Calle falsa 1235,1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 99999999999999999999999999999999999999,*El telefono no puede ser tan extenso,*El telefono no puede tener letras*El telefono no puede ser tan extenso
+CP28,-,Delivery,45766,ñññññññññññññññññññññ,69383,*El telefono es demasiado corto,Correcto
+CP29,-,Delivery,_$%$%7,%$&$%&??¡¡?,,*El nombre y la dirección deben contener al menos 4 letras,Correcto
+CP30,-,Delivery,d,d,-,*El telefono no puede tener letras,Correcto
+CP31,-,Delivery,d,d,--,*El telefono no puede tener letras,*El telefono no puede tener letras
+CP32,-,Take Away,Luis,Av. Cordoba 365,2646220733,Correcto,Correcto
+CP33,-,Take Away,Lu!5,Av. Cordoba 365,2646126622,Correcto? Nombre con simbolos y números,Correcto
+CP34,-,Take Away,Luis,Avenida 230,2646425634,Correcto? Direccion invalida,Correcto
+CP35,-,Take Away,,Av. Cordoba 327,2646622092,Correcto,Correcto
+CP36,-,Take Away,Luis,,264662872,Correcto,Correcto
+CP37,-,Take Away,Luis,Av. Cordoba 2314,,Correcto,Correcto
+CP38,-,Take Away,,,,Correcto,Correcto
+CP39,-,Take Away,Luis,Av. Cordoba 111,holaquetal,Correcto? Telefono con letras,Correcto
+CP40,-,Take Away,Martin,345347,+542645851568,Correcto,*El telefono no puede tener letras
+CP41,-,Take Away,Martin,2rewrk4rw(,3'405934'0441,*El telefono no puede tener caracteres especiales,*El telefono no puede tener letras
+CP42,-,Take Away,martinpelli@outlook.com,lmsfdfjlk245,,Correcto,Correcto
+CP43,-,Take Away,🤝,Calle falsa 1236,1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001 99999999999999999999999999999999999999,*El telefono no puede ser tan extenso,*El telefono no puede tener letras*El telefono no puede ser tan extenso
+CP44,-,Take Away,45767,ñññññññññññññññññññññ,69384,*El telefono es demasiado corto,Correcto
+CP45,-,Take Away,_$%$%8,%$&$%&??¡¡?,,*El nombre y la dirección deben contener al menos 4 letras,Correcto
+CP46,-,Take Away,d,d,-,*El telefono no puede tener letras,Correcto
+CP47,-,Take Away,d,d,--,*El telefono no puede tener letras,*El telefono no puede tener letras
+CP48,-,Take Away,ﺡﺡﺡﺡﺡﺡﺘﺘﺘ,ﺡﺡﺡﺡﺡﺡﺘﺘﺘ 34985347,99,Correcto,Correcto

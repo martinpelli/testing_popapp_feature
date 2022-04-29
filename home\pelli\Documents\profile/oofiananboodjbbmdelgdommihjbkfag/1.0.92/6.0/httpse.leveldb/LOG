@@ -1,7 +1,7 @@
-2022/04/27-22:10:17.101 4c56 Recovering log #3
-2022/04/27-22:10:17.277 4c56 Level-0 table #5: started
-2022/04/27-22:10:17.358 4c56 Level-0 table #5: 2784740 bytes OK
-2022/04/27-22:10:17.363 4c56 Recovering log #109
-2022/04/27-22:10:17.367 4c56 Delete type=0 #3
-2022/04/27-22:10:17.367 4c56 Delete type=0 #109
-2022/04/27-22:10:17.367 4c56 Delete type=3 #2
+2022/04/28-22:24:57.682 af03 Recovering log #3
+2022/04/28-22:24:57.840 af03 Level-0 table #5: started
+2022/04/28-22:24:57.933 af03 Level-0 table #5: 2784740 bytes OK
+2022/04/28-22:24:57.939 af03 Recovering log #156
+2022/04/28-22:24:57.943 af03 Delete type=0 #156
+2022/04/28-22:24:57.943 af03 Delete type=0 #3
+2022/04/28-22:24:57.943 af03 Delete type=3 #2
