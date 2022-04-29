@@ -143,12 +143,15 @@ class FindElements(unittest.TestCase):
 
 
     def checkIfScreenIsShowingLabelError(self, expectedResult):
-        isTestOK = False
+        isTestOK = None
         wait = WebDriverWait(self.driver, 1)
+        realResult = ""
         for labelErrorXpath in self.labelErrorsXpaths:
             if self.checkIfElementExistsByXpath(labelErrorXpath):
-                self.realResult += wait.until(Ec.visibility_of_element_located((By.XPATH, labelErrorXpath))).text
-                isTestOK = self.realResult == expectedResult
+                realResult += wait.until(Ec.visibility_of_element_located((By.XPATH, labelErrorXpath))).text
+                isTestOK = realResult == expectedResult
+        if realResult:
+            self.realResult = realResult
         return isTestOK
 
             
