@@ -65,7 +65,8 @@ class FindElements(unittest.TestCase):
                 pass
 
             if not self.checkIfElementExistsByXpath(orderTypeXpath):
-                self.pageBackAndClickNewOrder()
+                self.goPageBack()
+                self.pressNewOrder()
             
             self.pressTypeOfOrder(orderTypeXpath)
             self.setTextInInputs(testCase)
@@ -76,12 +77,19 @@ class FindElements(unittest.TestCase):
 
 
     def pressTypeOfOrder(self, orderTypeXpath):
-        orderTypeSelected = self.driver.find_element(by=By.XPATH, value=orderTypeXpath)
-        orderTypeSelected.click()
+        try:
+            orderTypeSelected = self.driver.find_element(by=By.XPATH, value=orderTypeXpath)
+            orderTypeSelected.click()
+        except:
+            self.goPageBack()
+            self.pressNewOrder()
 
 
-    def pageBackAndClickNewOrder(self):
+    def goPageBack(self):
         self.driver.execute_script(self.GO_BACK_WEB_PATH)
+        
+
+    def pressNewOrder(self):
         wait = WebDriverWait(self.driver, 10)
         wait.until(Ec.visibility_of_element_located((By.XPATH, self.CANCEL_ORDER_BUTTON_FULL_XPATH))).click()
         wait.until(self.newOrderButton).click()
