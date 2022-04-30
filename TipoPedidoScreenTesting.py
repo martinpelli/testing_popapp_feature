@@ -7,8 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 import undetected_chromedriver.v2 as uc
 
 import TestCasesController as controller
-import TestCaseModel as model
-
+import PDFWriter as writer
 
 
 
@@ -33,12 +32,7 @@ class FindElements(unittest.TestCase):
         OBLIGATORY_ERROR_ADDRESS_LABEL_FULL_XPATH = "/html/body/app-root/div[2]/ng-component/app-modal-tipoycliente/div[2]/div/div/div[2]/div[3]/small"
         self.CANCEL_ORDER_BUTTON_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/app-cancelar-nuevopedido/div[2]/div/div/div[2]/div/atom-button[2]/button"
         self.GO_BACK_WEB_PATH = "window.history.go(-1)"
-        options = uc.ChromeOptions()
-        options.user_data_dir = PROFILE_COOKIES_PATH
-        options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
-        self.driver = uc.Chrome(options=options, version_main=100)
-        self.driver.get('https://test.popapp.io/ponline/pedidos/keyLeandroDrazic3/pendientes')
-        
+       
         self.ordersTypeXpaths = {
             "Mostrador": BAR_BUTTON_FULL_XPATH, 
             "Delivery": DELIVERY_BUTTON_FULL_XPATH, 
@@ -48,6 +42,13 @@ class FindElements(unittest.TestCase):
         self.labelErrorsTexts = [PHONE_ERROR_LETTERS_TEXT, PHONE_ERROR_EXTENSIVE_TEXT, OBLIGATORY_ADDRESS_ERROR_LABEL]
         self.newOrderButton = Ec.visibility_of_element_located((By.XPATH, NEW_ORDER_FULL_XPATH))
         self.realResult = ""
+        self.pdfWriter = writer.PDFWriter()
+        options = uc.ChromeOptions()
+        options.user_data_dir = PROFILE_COOKIES_PATH
+        options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
+        self.driver = uc.Chrome(options=options, version_main=100)
+        
+        self.driver.get('https://test.popapp.io/ponline/pedidos/keyLeandroDrazic3/pendientes')
         areYouThereButton = Ec.visibility_of_element_located((By.XPATH, ARE_YOU_THERE_FULL_XPATH))
         wait = WebDriverWait(self.driver, 20)
         wait.until(areYouThereButton).click()
@@ -72,12 +73,6 @@ class FindElements(unittest.TestCase):
             
             isTestOk = self.isTestOK(testCase.expectedResult)
             self.writeTestResultInFile(testCase, isTestOk)
-
-
-    def tearDown(self):
-        pass
-        #self.file.close()
-        #self.driver.quit()
 
 
     def pressTypeOfOrder(self, orderTypeXpath):
@@ -154,15 +149,13 @@ class FindElements(unittest.TestCase):
             self.realResult = realResult
         return isTestOK
 
-            
-
 
     def writeTestResultInFile(self, testCase, isTestOK):
-        print("")
-        print("Test case: " + testCase.id + " Tipo de Pedido: " + testCase.orderType + " ")
-        print("Nombre: " + testCase.inputs[0] + " Dirección: " + testCase.inputs[1] + " Telefono: " + testCase.inputs[2] + " ")
-        print("Resultado Esperado: " + testCase.expectedResult + " Resultado Real: " + self.realResult)
-        print("Test OK" if isTestOK else "Test FAILED")
+        self.pdfWriter.addRowAndStyleToTable(testCase, self.realResult,isTestOK)
+
+
+    def tearDown(self):
+        self.pdfWriter.finishTable()
 
 
 if __name__ == "__main__":
