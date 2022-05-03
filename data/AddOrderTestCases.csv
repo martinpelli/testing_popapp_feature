@@ -1,0 +1,12 @@
+MATRIZ DE CASOS DE PRUEBA - ID CU01 - Tipo pedido,,,,,,
+,,Elementros de Entrada,,Elementos Estáticos,Output,
+Id CP,Producto,Cantidad,Observacion,Precio,Resultado esperado,Resultado Real
+CP1,4 Quesos,2,queso,700,*Producto agregado al pedido,Correcto
+CP1,Blue Burger,2,queso,500,*Producto agregado al pedido,Correcto
+CP1,Coca Cola,2,queso,200,*Producto agregado al pedido,Correcto
+CP1,Doble Cheddar,2,queso,450,*Producto agregado al pedido,Correcto
+CP1,Especial,2,queso,600,*Producto agregado al pedido,Correcto
+CP1,Sprite,2,queso,170,*Producto agregado al pedido,Correcto
+CP1,Triple Bacon,2,queso,550,*Producto agregado al pedido,Correcto
+CP2,Triple Bacon,1,quesotreta,550,*Producto agregado al pedido,Correcto
+CP2,Coca Cola,1,quesotreta,200,*Producto agregado al pedido,Correcto
