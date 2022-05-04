@@ -1,14 +1,13 @@
-from ast import Pass
 import time
 import unittest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as Ec
-from selenium.common.exceptions import NoSuchElementException
 import undetected_chromedriver.v2 as uc
 
 import services.PDFWriter as dataWriter
 import services.CSVReader as dataReader
+from services.CutLargeText import cutLargeText
 
 
 
@@ -16,14 +15,13 @@ class FindElements(unittest.TestCase):
 
     def setUp(self):
         PROFILE_COOKIES_PATH = "home/pelli/Documents/Popapp/profile"
-            
-        ORDER_ITEMS_COUNT_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[2]/div/p"
-        TOTAL_LABEL_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[4]/div/h6"
-        CONTINUE_BUTTON_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[6]/atom-button/button"
+        
+        self.ORDER_PRODUCTS_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div"
         
         self.testCases = []
         self.realResult = ""
-        pdfHeader = ["Id","Product","Quantity","Observation","Price","Expected Result"]
+        self.totalPrice = 0
+        pdfHeader = ["Id","Product","Quantity","Observation","Expected Result"]
         self.pdfWriter = dataWriter.PDFWriter(pdfHeader)
         options = uc.ChromeOptions()
         options.user_data_dir = PROFILE_COOKIES_PATH
@@ -63,48 +61,104 @@ class FindElements(unittest.TestCase):
                 index += 1
 
 
-    def addProductsToOrder(self):
+    def testAddOrderScreen(self):
+        previousId = "CP1"
+        indexOfXpath = 0
+        for i in range(0, len(self.testCases)):
 
+            if (previousId == self.testCases[i].id and (len(self.testCases)-1 != i)):
+                indexOfXpath += 1
+            else:
+                self.deleteOrderToMakeNewOne(indexOfXpath)
+                self.totalPrice = 0
+                indexOfXpath = 1
+
+            indexOfProduct = self.productsLabels.index(self.testCases[i].product)
+            self.addProductToOrder(i, indexOfProduct)
+            isTestOK = self.isProductAddedCorrectlyToOrder(i, indexOfXpath, indexOfProduct)
+            isTestOK = self.CheckIfTotalPriceAndItemsCountAreCorrect(indexOfXpath, isTestOK)
+            self.writeTestResultInFile(self.testCases[i], isTestOK)
+
+            previousId = self.testCases[i].id
+        
+
+    def addProductToOrder(self, indexOfTestCase, indexOfProduct):
         QUANTITY_INPUT_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[1]/div[3]/div[2]/app-tablaproductos/app-modal-agregar-producto/div[2]/div/div/form/div[1]/div[2]/div[1]/atom-input/div/input"
         OBSERVATIONS_INPUT_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[1]/div[3]/div[2]/app-tablaproductos/app-modal-agregar-producto/div[2]/div/div/form/div[1]/div[2]/div[3]/textarea"
         ADD_TO_ORDER_BUTTON_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[1]/div[3]/div[2]/app-tablaproductos/app-modal-agregar-producto/div[2]/div/div/form/div[2]/atom-button/button"
 
-       
-        productLabel = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div/div/button/p[1]/span"
-        productPrice = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div/div/button/p[2]"
-                            #/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div[1]/div/button/p[2]
-                           # /html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div[2]/div/button/p[2]
-        productQuantity = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[3]/app-detalle-desplegable/div/div/div/div/ngb-accordion/div/div/button/p[1]/strong"
-
-        previousId = "CP1"
-
-
-        for i in range(0, len(self.testCases)):
-            if previousId == self.testCases[i].id:
-                indexOfProduct = self.productsLabels.index(self.testCases[i].product)
-
-                addProductButton = self.productsButtons[indexOfProduct]
-                addProductButton.click()
-                quantityInput = self.driver.find_element(by=By.XPATH, value=QUANTITY_INPUT_FULL_XPATH)
-                observationsInput = self.driver.find_element(by=By.XPATH, value=OBSERVATIONS_INPUT_FULL_XPATH)
-                addToOrderButton = self.driver.find_element(by=By.XPATH, value=ADD_TO_ORDER_BUTTON_FULL_XPATH)
-                quantityInput.clear()
-                quantityInput.send_keys(self.testCases[i].quantity)
-                observationsInput.send_keys(self.testCases[i].observations)
-                addToOrderButton.click()
-
-            else:
-                #comprobar items, total, precio, cantidad
-                time.sleep(1000)
-                print("aca termina el pedido")
-            previousId = self.testCases[i].id
+        addProductButton = self.productsButtons[indexOfProduct]
+        addProductButton.click()
+        quantityInput = self.driver.find_element(by=By.XPATH, value=QUANTITY_INPUT_FULL_XPATH)
+        observationsInput = self.driver.find_element(by=By.XPATH, value=OBSERVATIONS_INPUT_FULL_XPATH)
+        addToOrderButton = self.driver.find_element(by=By.XPATH, value=ADD_TO_ORDER_BUTTON_FULL_XPATH)
+        quantityInput.clear()
+        quantityInput.send_keys(self.testCases[indexOfTestCase].quantity)
+        observationsInput.send_keys(self.testCases[indexOfTestCase].observations)
+        addToOrderButton.click()
 
 
+    def isProductAddedCorrectlyToOrder(self,indexOfTestCase, indexOfXpath, indexOfProduct):
+        LABEL_ORDER_PRODUCT_FULL_XPATH = "/div/button/p[1]/span"
+        PRICE_ORDER_PRODUCT_FULL_XPATH = "/div/button/p[2]"
+        QUANTITY_ORDER_PRODUCT_FULL_XPATH = "/div/button/p[1]/strong"
 
-    def testAddOrderScreen(self):
-        self.addProductsToOrder()
-        #for testCase in self.testCases:
-            
+        orderProductLabel = self.driver.find_element(by=By.XPATH, value=self.ORDER_PRODUCTS_FULL_XPATH + "[" +str(indexOfXpath)  + "]" + LABEL_ORDER_PRODUCT_FULL_XPATH).text
+        orderProductPrice = int(self.driver.find_element(by=By.XPATH, value=self.ORDER_PRODUCTS_FULL_XPATH + "[" +str(indexOfXpath)  + "]" + PRICE_ORDER_PRODUCT_FULL_XPATH).text[1:])
+        orderProductQuantity = self.driver.find_element(by=By.XPATH, value=self.ORDER_PRODUCTS_FULL_XPATH + "[" +str(indexOfXpath)  + "]" + QUANTITY_ORDER_PRODUCT_FULL_XPATH).text
+        self.totalPrice += orderProductPrice
+
+        isTestOK = True
+        self.realResult = "*Producto agregado al pedido" 
+        if (self.productsLabels[indexOfProduct] != orderProductLabel):
+            isTestOK = False
+            self.realResult = "*Nombre incorrecto" 
+        if (int(self.productsPrices[indexOfProduct][1:]) * int(self.testCases[indexOfTestCase].quantity)) !=  orderProductPrice:
+            isTestOK = False
+            self.realResult = "*Precio incorrecto"
+        if (self.testCases[indexOfTestCase].quantity + " x  " != orderProductQuantity):
+            isTestOK = False
+            self.realResult = "*Cantidad incorrecta"
+        return isTestOK
+
+
+    def CheckIfTotalPriceAndItemsCountAreCorrect(self, indexOfXpath, isTestOK):
+        TOTAL_LABEL_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[4]/div/h6"
+        ORDER_ITEMS_COUNT_LABEL_FULL_XPATH = "/html/body/app-root/div[2]/app-crear-pedido/app-nuevo-pedido-desktop/div/div/div/div[2]/div[2]/div/p"
+
+        totalPriceLabel =  self.driver.find_element(by=By.XPATH, value=TOTAL_LABEL_FULL_XPATH).text.replace(".", "",1)
+        indexOfComma = totalPriceLabel.find(",",9)
+        totalPriceLabel = int(totalPriceLabel[9:indexOfComma])
+        itemsCountLabel = self.driver.find_element(by=By.XPATH, value=ORDER_ITEMS_COUNT_LABEL_FULL_XPATH).text
+        
+        if self.totalPrice != totalPriceLabel:
+            self.realResult = "*Precio total incorrecto"
+            isTestOK = False
+        if itemsCountLabel != "Items "+ str(indexOfXpath):
+            self.realResult = "*Cantidad de items incorrecto"
+            isTestOK = False
+        return isTestOK
+
+
+    def deleteOrderToMakeNewOne(self, indexOfXpath):
+        PANEL_BUTTON_ORDER_FULL_XPATH = "/div/button"
+        DELETE_PRODUCT_ORDER_FULL_XPATH = "/div[2]/div/div[2]/div/button[2]"
+        
+        for j in range(indexOfXpath, 0, -1):
+            self.driver.find_element(by=By.XPATH, value=self.ORDER_PRODUCTS_FULL_XPATH + "[" +str(j)  + "]" + PANEL_BUTTON_ORDER_FULL_XPATH).click()
+            self.driver.find_element(by=By.XPATH, value=self.ORDER_PRODUCTS_FULL_XPATH + "[" +str(j)  + "]" + DELETE_PRODUCT_ORDER_FULL_XPATH).click()
+
+
+    def writeTestResultInFile(self, testCase, isTestOK):
+        testCase = [
+            testCase.id, 
+            testCase.product, 
+            testCase.quantity,
+            testCase.observations,
+            cutLargeText(testCase.expectedResult),
+            cutLargeText(self.realResult)
+            ]
+        self.pdfWriter.addRowAndStyleToTable(testCase,isTestOK)
 
 
     def tearDown(self):

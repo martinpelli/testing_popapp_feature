@@ -26,26 +26,12 @@ class PDFWriter:
         self.table = [header]
 
 
-    def addRowAndStyleToTable(self, testCase, realResult, isTestOK):
-        row = [[testCase.id, testCase.orderType, self.checkTextLength(testCase.inputs[0]), self.checkTextLength(testCase.inputs[1]), self.checkTextLength(testCase.inputs[2]), self.checkTextLength(testCase.expectedResult), self.checkTextLength(realResult)]]
+    def addRowAndStyleToTable(self, testCase, isTestOK):
+        row = [[*testCase]]
         self.table.extend(row)
         self.tableStyle.append(('BACKGROUND', (0, self.rowNumber), (-1, self.rowNumber), colors.lightblue if isTestOK else colors.lightcoral))
         self.rowNumber += 1
 
-
-    def checkTextLength(self, text):
-        TEXT_MEDIUM_LENGTH = 40
-        TEXT_HIGH_LENGTH = 80
-        textLength = len(text)
-        if textLength < TEXT_MEDIUM_LENGTH:
-            return text
-        if textLength >= TEXT_MEDIUM_LENGTH and textLength < TEXT_HIGH_LENGTH:
-            firstHalf = text[:textLength//2]
-            secondHalf = text[textLength//2:]
-            firstHalf += '-\n'
-            return firstHalf + secondHalf
-        return "Too large text"
-        
 
     def writeToPDF(self, fileName, pathToSaveFile, title, testerName):
         actualDate = datetime.now().strftime('%d/%m/%Y')

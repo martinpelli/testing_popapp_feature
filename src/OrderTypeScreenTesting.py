@@ -8,6 +8,7 @@ import undetected_chromedriver.v2 as uc
 
 import services.PDFWriter as dataWriter
 import services.CSVReader as dataReader
+from services.CutLargeText import cutLargeText
 
 
 
@@ -168,7 +169,16 @@ class FindElements(unittest.TestCase):
 
 
     def writeTestResultInFile(self, testCase, isTestOK):
-        self.pdfWriter.addRowAndStyleToTable(testCase, self.realResult,isTestOK)
+        testCase = [
+            testCase.id, 
+            testCase.orderType, 
+            cutLargeText(testCase.inputs[0]), 
+            cutLargeText(testCase.inputs[1]), 
+            cutLargeText(testCase.inputs[2]), 
+            cutLargeText(testCase.expectedResult),
+            cutLargeText(self.realResult)
+            ]
+        self.pdfWriter.addRowAndStyleToTable(testCase,isTestOK)
 
 
     def tearDown(self):

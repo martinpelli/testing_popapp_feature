@@ -1,7 +1,7 @@
-2022/05/03-16:20:44.973 790e Recovering log #3
-2022/05/03-16:20:45.076 790e Level-0 table #5: started
-2022/05/03-16:20:45.126 790e Level-0 table #5: 2784740 bytes OK
-2022/05/03-16:20:45.131 790e Recovering log #7
-2022/05/03-16:20:45.134 790e Delete type=0 #3
-2022/05/03-16:20:45.134 790e Delete type=0 #7
-2022/05/03-16:20:45.134 790e Delete type=3 #2
+2022/05/04-09:51:33.272 c8d3 Recovering log #3
+2022/05/04-09:51:33.376 c8d3 Level-0 table #5: started
+2022/05/04-09:51:33.430 c8d3 Level-0 table #5: 2784740 bytes OK
+2022/05/04-09:51:33.434 c8d3 Recovering log #100
+2022/05/04-09:51:33.437 c8d3 Delete type=0 #3
+2022/05/04-09:51:33.438 c8d3 Delete type=0 #100
+2022/05/04-09:51:33.438 c8d3 Delete type=3 #2
