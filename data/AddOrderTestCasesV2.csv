@@ -1,0 +1,30 @@
+MATRIZ DE CASOS DE PRUEBA - ID CU02 - Agregar Producto,,,,,,
+Identificadores,,,Elementros de Entrada,,Output,
+Id CP,CP-Pedido,Productos,Cantidad,Observacion,Resultado esperado,Resultado Real
+CP1,CP1,4 Quesos,2,queso,Correcto,Correcto
+CP2,CP1,Blue Burger,2,queso,Correcto,Correcto
+CP3,CP1,Coca Cola,2,queso,Correcto,Correcto
+CP4,CP1,Doble Cheddar,2,queso,Correcto,Correcto
+CP5,CP1,Especial,2,queso,Correcto,Correcto
+CP6,CP1,Sprite,2,queso,Correcto,Correcto
+CP7,CP1,Triple Bacon,2,queso,Correcto,Correcto
+CP8,CP1,Triple Bacon,2,queso,Correcto,Correcto
+CP9,CP2,4 Quesos,2,queso,Correcto,Correcto
+CP10,CP2,Blue Burger,2,queso,Correcto,Correcto
+CP11,CP2,Coca Cola,2,queso,Correcto,Correcto
+CP12,CP2,Doble Cheddar,2,queso,Correcto,Correcto
+CP13,CP2,Especial,2,queso,Correcto,Correcto
+CP14,CP2,Sprite,2,queso,Correcto,Correcto
+CP15,CP2,Triple Bacon,2,queso,Correcto,Correcto
+CP16,CP2,Triple Bacon,2,queso,Correcto,Correcto
+CP17,CP1,4 Quesos,3,queso,Correcto,Correcto
+CP18,CP3,4 Quesos,0,queso,*La cantidad debe ser mayor a 0,*La cantidad debe ser mayor a 0
+CP19,CP3,Blue Burger,-3,queso,*La cantidad debe ser mayor a 0,*La cantidad debe ser mayor a 0
+CP20,CP3,Coca Cola,99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999,queso,*La cantidad debe ser menor a 99999,*La cantidad debe ser menor a 99999
+CP21,CP3,Doble Cheddar,texto,queso,*La cantidad es requerida,*La cantidad es requerida
+CP22,CP3,Especial,🎃🎃,queso,*La cantidad es requerida,*La cantidad es requerida
+CP23,CP3,Sprite,,queso,*La cantidad es requerida,Correcto
+CP24,CP3,Producto no Existe,2,queso,*Producto no encontrado,*Producto no encontrado
+CP25,CP3,,2,,*Producto no encontrado,*Producto no encontrado
+CP26,CP3,Sprite,2,🎃🎃,Correcto,Correcto
+CP27,CP3,Sprite,2,,Correcto,Correcto

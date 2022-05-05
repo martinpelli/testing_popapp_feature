@@ -9,6 +9,7 @@ import undetected_chromedriver.v2 as uc
 import services.PDFWriter as dataWriter
 import services.CSVReader as dataReader
 from services.CutLargeText import cutLargeText
+from services.EmojiSender import sendSpecialText
 
 
 
@@ -107,16 +108,7 @@ class FindElements(unittest.TestCase):
             try:
                 inputSelected.send_keys(text)
             except:
-                self.sendSpecialText(inputSelected, text)
-                
-    
-    def sendSpecialText(self, inputSelected, text):
-        JS_ADD_TEXT_TO_INPUT = """
-        var elm = arguments[0], txt = arguments[1];
-        elm.value += txt;
-        elm.dispatchEvent(new Event('change'));
-        """
-        self.driver.execute_script(JS_ADD_TEXT_TO_INPUT, inputSelected, text)
+                 self.driver.execute_script(sendSpecialText(), inputSelected, text)
 
 
     def pressContinueOrder(self):
@@ -124,31 +116,16 @@ class FindElements(unittest.TestCase):
         continueButton = self.driver.find_element(by=By.XPATH, value=CONTINUE_BUTTON_FULL_XPATH)
         disabled = continueButton.get_attribute('disabled')
         if disabled:
-            self.realResult = "Boton Continuar deshabilitado"
+            if not self.realResult:
+                self.realResult = "Boton Continuar deshabilitado"
         else:
             continueButton.click()
             self.realResult = "Correcto"
 
 
     def isTestOK(self, expectedResult):
-        if self.isExpectedResultAnErrorLabel(expectedResult):
-            return self.checkIfScreenIsShowingLabelError(expectedResult)
-        return self.realResult == expectedResult
-
-
-    def isExpectedResultAnErrorLabel(self, expectedResult):
-        PHONE_ERROR_LETTERS_TEXT = "*El telefono no puede tener letras"
-        PHONE_ERROR_EXTENSIVE_TEXT = "*El telefono no puede ser tan extenso"
-        OBLIGATORY_ADDRESS_ERROR_LABEL = "*La direccion es obligatoria"
-        labelErrorsTexts = [PHONE_ERROR_LETTERS_TEXT, PHONE_ERROR_EXTENSIVE_TEXT, OBLIGATORY_ADDRESS_ERROR_LABEL]
-
-        try:
-            labelErrorsTexts.index(expectedResult)
-        except:
-            return False
-        else:
-            return True
-
+        return self.checkIfScreenIsShowingLabelError(expectedResult)
+        
 
     def checkIfScreenIsShowingLabelError(self, expectedResult):
         INVALID_ERROR_LABEL_FULL_XPATH_1 = "/html/body/app-root/div[2]/ng-component/app-modal-tipoycliente/div[2]/div/div/div[2]/div[4]/small"
@@ -156,7 +133,7 @@ class FindElements(unittest.TestCase):
         OBLIGATORY_ERROR_ADDRESS_LABEL_FULL_XPATH = "/html/body/app-root/div[2]/ng-component/app-modal-tipoycliente/div[2]/div/div/div[2]/div[3]/small"       
         labelErrorsXpaths = [INVALID_ERROR_LABEL_FULL_XPATH_1, INVALID_ERROR_LABEL_FULL_XPATH_2, OBLIGATORY_ERROR_ADDRESS_LABEL_FULL_XPATH]
 
-        isTestOK = None
+        isTestOK = True
         wait = WebDriverWait(self.driver, 1)
         realResult = ""
         for labelErrorXpath in labelErrorsXpaths:
@@ -165,7 +142,7 @@ class FindElements(unittest.TestCase):
                 isTestOK = realResult == expectedResult
         if realResult:
             self.realResult = realResult
-        return isTestOK
+        return self.realResult == expectedResult if isTestOK else isTestOK
 
 
     def writeTestResultInFile(self, testCase, isTestOK):
@@ -179,6 +156,7 @@ class FindElements(unittest.TestCase):
             cutLargeText(self.realResult)
             ]
         self.pdfWriter.addRowAndStyleToTable(testCase,isTestOK)
+        self.realResult = ""
 
 
     def tearDown(self):
@@ -187,6 +165,7 @@ class FindElements(unittest.TestCase):
         title = 'Order Type Screen Automated Tests'
         testerName = 'Martín Pellicer'
         self.pdfWriter.writeToPDF(fileName, pathToSaveFile, title, testerName)
+        
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
-2022/05/04-09:51:33.272 c8d3 Recovering log #3
-2022/05/04-09:51:33.376 c8d3 Level-0 table #5: started
-2022/05/04-09:51:33.430 c8d3 Level-0 table #5: 2784740 bytes OK
-2022/05/04-09:51:33.434 c8d3 Recovering log #100
-2022/05/04-09:51:33.437 c8d3 Delete type=0 #3
-2022/05/04-09:51:33.438 c8d3 Delete type=0 #100
-2022/05/04-09:51:33.438 c8d3 Delete type=3 #2
+2022/05/05-11:04:57.243 f8ba Recovering log #3
+2022/05/05-11:04:57.402 f8ba Level-0 table #5: started
+2022/05/05-11:04:57.492 f8ba Level-0 table #5: 2784740 bytes OK
+2022/05/05-11:04:57.499 f8ba Recovering log #204
+2022/05/05-11:04:57.502 f8ba Delete type=0 #204
+2022/05/05-11:04:57.502 f8ba Delete type=0 #3
+2022/05/05-11:04:57.502 f8ba Delete type=3 #2

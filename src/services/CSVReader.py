@@ -5,7 +5,7 @@ import models.AddOrderModel as AddOrderModel
 
 def readCSVAndSetTestCases(screen):
     testCases = []
-    PATH_TO_DATA = '/home/pelli/Documents/Popapp/data/' + screen + 'TestCases.csv'
+    PATH_TO_DATA = '/home/pelli/Documents/Popapp/data/' + screen + 'TestCasesV2.csv'
 
     with open(PATH_TO_DATA, mode ='r')as file:
 
@@ -21,5 +21,5 @@ def readCSVAndSetTestCases(screen):
 def screenDataToRead(screen, line):
     return {
         'OrderType': lambda: OrderTypeModel.OrderTypeModel(line[0], line[2], line[3], line[4], line[5], line[6]),
-        'AddOrder': lambda: AddOrderModel.AddOrderModel(line[0], line[1], line[2], line[3], line[5]),
+        'AddOrder': lambda: AddOrderModel.AddOrderModel(line[1], line[2], line[3], line[4], line[5]),
     }.get(screen, lambda: None)
